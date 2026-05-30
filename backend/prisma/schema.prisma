@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Vaga {
+  id          Int        @id @default(autoincrement())
+  codigo      String     @unique
+  logradouro  String
+  numero      String
+  bairro      String
+  cidade      String
+  latitude    Float
+  longitude   Float
+  tamanho     String?
+  valorMinuto Float      @default(1.0)
+  limiteTempo Int        @default(45)
+  ativa       Boolean    @default(true)
+  criadaEm    DateTime   @default(now())
+  sessoes     Sessao[]
+  infracoes   Infracao[]
+}
+
+model Veiculo {
+  id          Int        @id @default(autoincrement())
+  placa       String     @unique
+  renavam     String     @unique
+  empresaId   Int?
+  motoristaId Int?
+  tipo        String
+  criadoEm    DateTime   @default(now())
+  sessoes     Sessao[]
+  infracoes   Infracao[]
+  empresa     Empresa?   @relation(fields: [empresaId], references: [id])
+  motorista   Motorista? @relation(fields: [motoristaId], references: [id])
+  atribuicoes AtribuicaoVeiculo[]
+}
+
+model Sessao {
+  id             Int       @id @default(autoincrement())
+  vagaId         Int
+  veiculoId      Int
+  motoristaId    Int?
+  pagadorTipo    String?   // "MOTORISTA" ou "EMPRESA"
+  pagadorId      Int?      // ID da carteira que pagou
+  valorCobrado   Float?
+  iniciadaEm     DateTime  @default(now())
+  encerradaEm    DateTime?
+  status         String    @default("ATIVA")
+  vaga           Vaga      @relation(fields: [vagaId], references: [id])
+  veiculo        Veiculo   @relation(fields: [veiculoId], references: [id])
+  motorista      Motorista? @relation(fields: [motoristaId], references: [id])
+}
+
+model Fiscal {
+  id        Int        @id @default(autoincrement())
+  nome      String
+  matricula String     @unique
+  setor     String
+  infracoes Infracao[]
+}
+
+model Infracao {
+  id           Int      @id @default(autoincrement())
+  veiculoId    Int?
+  placaAvulsa  String?
+  vagaId       Int
+  fiscalId     Int
+  motivo       String
+  registradaEm DateTime @default(now())
+  observacao   String?
+  vaga         Vaga     @relation(fields: [vagaId], references: [id])
+  fiscal       Fiscal   @relation(fields: [fiscalId], references: [id])
+  veiculo      Veiculo? @relation(fields: [veiculoId], references: [id])
+}
+
+model Empresa {
+  id         Int         @id @default(autoincrement())
+  cnpj       String      @unique
+  nome       String
+  tipo       String      @default("EMPRESA") // AUTONOMO ou EMPRESA
+  senha      String
+  creditos   Float       @default(0.0)
+  criadaEm   DateTime    @default(now())
+  veiculos   Veiculo[]
+  vinculos   Vinculo[]
+}
+
+model Motorista {
+  id         Int       @id @default(autoincrement())
+  cpf        String    @unique
+  nome       String
+  idade      Int?
+  senha      String
+  creditos   Float     @default(0.0)
+  status     String    @default("ATIVO") // ATIVO, DESATIVADO
+  criadoEm   DateTime  @default(now())
+  veiculos   Veiculo[]
+  vinculos   Vinculo[]
+  sessoes    Sessao[]
+  atribuicoes AtribuicaoVeiculo[]
+}
+
+model Vinculo {
+  id          Int       @id @default(autoincrement())
+  motoristaId Int
+  empresaId   Int
+  status      String    @default("ATIVO") // ATIVO, DESATIVADO
+  tipoAcesso  String    @default("FIXO") // FIXO, TEMPORARIO
+  expiraEm    DateTime?
+  criadoEm    DateTime  @default(now())
+
+  motorista   Motorista @relation(fields: [motoristaId], references: [id])
+  empresa     Empresa   @relation(fields: [empresaId], references: [id])
+
+  @@unique([motoristaId, empresaId])
+}
+
+model AtribuicaoVeiculo {
+  id          Int       @id @default(autoincrement())
+  veiculoId   Int
+  motoristaId Int
+  atribuidoEm DateTime  @default(now())
+
+  veiculo     Veiculo   @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
+  motorista   Motorista @relation(fields: [motoristaId], references: [id], onDelete: Cascade)
+
+  @@unique([veiculoId, motoristaId])
+}

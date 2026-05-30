@@ -1,0 +1,11 @@
+{
+  "name": "cargoslot",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm --filter backend build && pnpm --filter frontend build",
+    "install:all": "pnpm -r install",
+    "db:push": "pnpm --filter backend db:push",
+    "seed": "pnpm --filter backend seed"
+  }
+}

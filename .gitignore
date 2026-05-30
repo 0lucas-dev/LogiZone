@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+.pnpm-store/
+
+# Build
+dist/
+backend/dist/
+
+# Banco de dados (NUNCA commitar)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Prisma migrations locais (opcional manter)
+# /backend/prisma/migrations/
+
+# Ambiente
+.env
+.env.local
+.env.production
+
+# Vite
+frontend/.vite/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
