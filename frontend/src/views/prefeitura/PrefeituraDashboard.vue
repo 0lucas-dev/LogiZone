@@ -10,8 +10,11 @@
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Adicionar Nova Vaga -->
         <div class="card p-0">
-          <div class="p-4 border-b">
-            <h3 class="m-0 text-lg">Nova Vaga</h3>
+          <div class="p-4 border-b flex justify-between items-center">
+            <h3 class="m-0 text-lg">{{ vagaEditandoId ? 'Editar Vaga' : 'Nova Vaga' }}</h3>
+            <button v-if="vagaEditandoId" type="button" class="btn btn-sm text-muted" @click="cancelarEdicao">
+              Cancelar
+            </button>
           </div>
           <form @submit.prevent="adicionarVaga" class="p-4">
             <div class="form-group">
@@ -54,7 +57,7 @@
             </div>
             
             <button type="submit" class="btn btn-primary w-full mt-4">
-              Cadastrar Vaga
+              {{ vagaEditandoId ? 'Atualizar Vaga' : 'Cadastrar Vaga' }}
             </button>
           </form>
         </div>
@@ -83,7 +86,17 @@
                     </div>
                   </td>
                   <td class="text-right align-top pt-4">
-                    <BadgeStatus :status="vaga.status" />
+                    <div class="flex flex-col items-end gap-2">
+                      <BadgeStatus :status="vaga.status" />
+                      <div class="flex gap-2 mt-2">
+                        <button @click="editarVaga(vaga)" class="text-xs text-primary bg-transparent border-0 cursor-pointer p-0 hover:underline">
+                          Editar
+                        </button>
+                        <button @click="excluirVaga(vaga.id)" class="text-xs text-error bg-transparent border-0 cursor-pointer p-0 hover:underline">
+                          Excluir
+                        </button>
+                      </div>
+                    </div>
                   </td>
                 </tr>
                 <tr v-if="vagasStore.vagas.length === 0">
@@ -109,6 +122,8 @@ import axios from 'axios';
 
 const vagasStore = useVagasStore();
 
+const vagaEditandoId = ref<number | null>(null);
+
 const form = ref({
   codigo: '',
   logradouro: '',
@@ -122,19 +137,75 @@ const form = ref({
   limiteTempo: 45
 });
 
+function cancelarEdicao() {
+  vagaEditandoId.value = null;
+  form.value = {
+    codigo: '',
+    logradouro: '',
+    numero: '',
+    bairro: '',
+    cidade: 'Cidade Padrão',
+    latitude: -23.5505,
+    longitude: -46.6333,
+    tamanho: 'VAN',
+    valorMinuto: 1.00,
+    limiteTempo: 45
+  };
+}
+
+function editarVaga(vaga: any) {
+  vagaEditandoId.value = vaga.id;
+  form.value = {
+    codigo: vaga.codigo,
+    logradouro: vaga.logradouro,
+    numero: vaga.numero,
+    bairro: vaga.bairro,
+    cidade: vaga.cidade,
+    latitude: vaga.latitude,
+    longitude: vaga.longitude,
+    tamanho: vaga.tamanho || 'VAN',
+    valorMinuto: vaga.valorMinuto || 1.00,
+    limiteTempo: vaga.limiteTempo || 45
+  };
+  // scroll para o topo para ver o formulário
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function excluirVaga(id: number) {
+  if (confirm('Tem certeza que deseja excluir esta vaga?')) {
+    try {
+      const res = await axios.delete(`/api/vagas/${id}`);
+      if (res.data.sucesso) {
+        vagasStore.buscarVagas();
+        if (vagaEditandoId.value === id) {
+          cancelarEdicao();
+        }
+      }
+    } catch (error: any) {
+      alert(error.response?.data?.erro || 'Erro ao excluir vaga');
+    }
+  }
+}
+
 onMounted(() => {
   vagasStore.buscarVagas();
 });
 
 async function adicionarVaga() {
   try {
-    const res = await axios.post('/api/vagas', form.value);
+    let res;
+    if (vagaEditandoId.value) {
+      res = await axios.patch(`/api/vagas/${vagaEditandoId.value}`, form.value);
+    } else {
+      res = await axios.post('/api/vagas', form.value);
+    }
+    
     if (res.data.sucesso) {
-      form.value.codigo = '';
+      cancelarEdicao();
       vagasStore.buscarVagas();
     }
-  } catch (error) {
-    alert('Erro ao cadastrar vaga');
+  } catch (error: any) {
+    alert(error.response?.data?.erro || 'Erro ao salvar vaga');
   }
 }
 </script>
@@ -148,5 +219,8 @@ async function adicionarVaga() {
 }
 .bg-gray-100 {
   background-color: #f5f5f5;
+}
+.text-error {
+  color: #dc3545;
 }
 </style>

@@ -130,4 +130,18 @@ router.patch("/:id", async (req: Request, res: Response) => {
   }
 });
 
+// DELETE /api/vagas/:id
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ sucesso: false, erro: "ID inválido" });
+    
+    // Deleta a vaga
+    await prisma.vaga.delete({ where: { id } });
+    res.json({ sucesso: true, mensagem: "Vaga excluída com sucesso" });
+  } catch (error) {
+    res.status(400).json({ sucesso: false, erro: "Erro ao excluir a vaga. Ela pode ter sessões ou infrações vinculadas." });
+  }
+});
+
 export default router;

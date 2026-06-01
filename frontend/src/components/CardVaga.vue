@@ -8,7 +8,7 @@
     </h3>
     
     <div class="card-body">
-      <p class="endereco">📍 {{ vaga.logradouro }}, {{ vaga.numero }}</p>
+      <p class="endereco"> {{ vaga.logradouro }}, {{ vaga.numero }}</p>
       <p class="bairro">{{ vaga.bairro }}</p>
       
       <div v-if="vaga.status === 'OCUPADA' || vaga.status === 'IRREGULAR'" class="info-sessao mt-4">

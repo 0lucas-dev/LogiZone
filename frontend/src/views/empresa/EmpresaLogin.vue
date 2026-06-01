@@ -33,15 +33,8 @@
           <input v-model="formRegistro.cnpj" type="text" class="form-control" required placeholder="00.000.000/0001-00" />
         </div>
         <div class="form-group">
-          <label>Nome da Empresa / Nome</label>
+          <label>Nome da Empresa</label>
           <input v-model="formRegistro.nome" type="text" class="form-control" required />
-        </div>
-        <div class="form-group">
-          <label>Tipo</label>
-          <select v-model="formRegistro.tipo" class="form-control">
-            <option value="EMPRESA">Empresa</option>
-            <option value="AUTONOMO">Autônomo</option>
-          </select>
         </div>
         <div class="form-group mb-6">
           <label>Senha</label>

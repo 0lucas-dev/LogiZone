@@ -2,7 +2,6 @@
   <div class="mapa-vagas">
     <div class="filtros mb-4">
       <div class="search-box">
-        <span class="search-icon">🔎</span>
         <input 
           type="text" 
           v-model="busca" 
@@ -21,7 +20,7 @@
     </div>
 
     <div v-else-if="vagasFiltradas.length === 0" class="text-center mt-4">
-      ✕ Nenhuma vaga encontrada.
+      Nenhuma vaga encontrada.
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3">
