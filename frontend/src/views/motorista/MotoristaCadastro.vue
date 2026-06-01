@@ -1,7 +1,7 @@
 <template>
   <div class="cadastro-container container">
     <div class="card login-card">
-      <h3>📝 Criar Conta Motorista</h3>
+      <h3 class="text-center mb-6 text-3xl font-bold text-navy">Criar Conta Motorista</h3>
       
       <form @submit.prevent="cadastrar" class="p-2">
         <div class="form-group">
@@ -22,12 +22,11 @@
         <div v-if="erro" class="erro-msg mt-4">⚠ {{ erro }}</div>
 
         <button type="submit" class="btn btn-primary mt-4 w-full" :disabled="carregando">
-          {{ carregando ? '▶ Cadastrando...' : '[ CADASTRAR ]' }}
+          {{ carregando ? '▶ Cadastrando...' : ' CADASTRAR ' }}
         </button>
       </form>
 
-      <hr />
-      <div class="text-center">
+      <div class="text-center mt-6">
         <p>Já tem cadastro? <RouterLink to="/motorista/login">→ Faça Login</RouterLink></p>
       </div>
     </div>

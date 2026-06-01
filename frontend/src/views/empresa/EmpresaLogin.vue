@@ -4,10 +4,10 @@
       <h2 class="text-center mb-6 text-2xl font-bold text-navy">Acesso Empresa</h2>
       
       <div class="flex border-b mb-6">
-        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors border-b-2" 
+        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors border-primary" 
                 :class="aba === 'login' ? 'border-primary text-primary' : 'border-transparent text-muted'" 
                 @click="aba = 'login'">Login</button>
-        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors border-b-2" 
+        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors border-primary" 
                 :class="aba === 'registro' ? 'border-primary text-primary' : 'border-transparent text-muted'" 
                 @click="aba = 'registro'">Cadastrar</button>
       </div>
@@ -100,20 +100,17 @@ async function fazerRegistro() {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-
 }
 .login-card {
   width: 100%;
   max-width: 420px;
-
-
-
 }
 .text-navy {
   color: var(--primary);
 }
 .border-primary {
   border-color: var(--primary);
+  background-color: var(--bg-color);
 }
 .border-transparent {
   border-color: transparent;

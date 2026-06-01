@@ -1,18 +1,20 @@
 <template>
   <div class="seletor-container">
-    <main class="container py-6 flex-1">
-      <div class="text-center mb-6 mt-6">
+    <header class="seletor-header">
+      <div class="text-center">
         <h1 class="brand-title">LogiZone</h1>
         <p class="text-muted max-w-2xl mx-auto">
-          Sistema de Gestão de Vagas Rotativas e Logística
+          Sistema de Vagas para carga e descarga de veículos
         </p>
       </div>
+    </header>
 
-      <div class="grid md:grid-cols-3 max-w-5xl mx-auto gap-4 mt-6">
+    <main class="seletor-main">
+      <div class="grid md:grid-cols-3 max-w-5xl mx-auto gap-4 w-full">
         
         <!-- Motorista -->
         <div class="card perfil-card" @click="irParaMotorista">
-          <h3 class="perfil-title">Motorista</h3>
+          <h3 class="perfil-title">Acessar Vagas</h3>
           <p class="perfil-desc">
             Encontre vagas, faça check-in pelo app e acompanhe seu histórico.
           </p>
@@ -21,7 +23,7 @@
 
         <!-- Empresa -->
         <div class="card perfil-card" @click="irParaEmpresa">
-          <h3 class="perfil-title">Empresa</h3>
+          <h3 class="perfil-title">Acesso Empresa</h3>
           <p class="perfil-desc">
             Gestão de frotas, motoristas e créditos corporativos centralizada.
           </p>
@@ -30,7 +32,7 @@
 
         <!-- Prefeitura -->
         <div class="card perfil-card" @click="irParaPrefeitura">
-          <h3 class="perfil-title">Prefeitura</h3>
+          <h3 class="perfil-title">Acesso Gestor Público</h3>
           <p class="perfil-desc">
             Monitoramento de ocupação e estatísticas de uso do município.
           </p>
@@ -66,10 +68,29 @@ function irParaPrefeitura() {
 
 <style scoped>
 .seletor-container {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   min-height: 100vh;
+  box-sizing: border-box;
+}
 
+.seletor-header {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.seletor-main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1024px;
+  padding: 0 var(--spacing-md);
+  box-sizing: border-box;
+  z-index: 5;
 }
 
 .brand-title {
@@ -104,7 +125,12 @@ function irParaPrefeitura() {
 }
 
 .footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 24px 0;
   border-top: 1px solid var(--border-color);
+  z-index: 10;
 }
 </style>

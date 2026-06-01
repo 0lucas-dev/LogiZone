@@ -7,15 +7,15 @@
   /* Tema Escuro e Elementos Destacados (Estilo Corporate Tech) */
   --primary: #f97316;       /* Laranja vibrante - Destaque Principal */
   --primary-hover: #ea580c; /* Laranja mais escuro para hover */
-  --bg-color: #0b1120;      /* Fundo principal azul muito escuro */
-  --card-bg: #1e293b;       /* Fundo de cards/painéis azul acinzentado */
-  --surface-hover: #334155; /* Cor para hover em botões flat */
+  --bg-color: #1f1f1f;      /* Fundo principal cinza muito escuro */
+  --card-bg: #2d2d2d;       /* Fundo de cards/painéis cinza escuro */
+  --surface-hover: #3d3d3d; /* Cor para hover em botões flat */
   
-  --text-main: #f8fafc;     /* Texto claro principal */
-  --text-muted: #94a3b8;    /* Texto secundário */
+  --text-main: #f5f5f5;     /* Texto claro principal */
+  --text-muted: #a0a0a0;    /* Texto secundário neutro */
   
-  --border-color: #334155;  /* Bordas visíveis mas discretas */
-  --border-focus: #475569;  /* Bordas em foco */
+  --border-color: #404040;  /* Bordas visíveis mas discretas */
+  --border-focus: #555555;  /* Bordas em foco */
   
   --accent: #38bdf8;        /* Azul claro para links e pequenos detalhes */
 
@@ -177,7 +177,7 @@ a:hover {
   font-size: 15px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  background-color: #0b1120;
+  background-color: #1f1f1f;
   color: var(--text-main);
   outline: none;
   transition: all 0.2s;
@@ -194,7 +194,7 @@ a:hover {
 
 select.form-control {
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0a0a0' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
