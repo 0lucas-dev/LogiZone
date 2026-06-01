@@ -26,7 +26,7 @@
         :disabled="vaga.status !== 'LIVRE'"
         @click="$emit('checkin', vaga.id)"
       >
-        [ CHECK-IN ]
+        CHECK-IN
       </button>
     </div>
   </div>

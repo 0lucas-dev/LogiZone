@@ -12,7 +12,7 @@
         <div class="text-right">
           <div class="text-xs text-muted mb-1">Saldo em Créditos</div>
           <div class="text-xl font-bold mb-2">R$ {{ empresa?.creditos?.toFixed(2) || '0.00' }}</div>
-          <button @click="adicionarCreditos" class="btn btn-outline btn-sm">Adicionar Fundos</button>
+          <button @click="adicionarCreditos" class="btn btn-outline btn-sm mb-2">Adicionar Fundos</button>
         </div>
       </div>
 
@@ -67,6 +67,7 @@
           <div class="p-4 bg-gray-50 border-b">
             <form @submit.prevent="cadastrarVeiculo" class="flex gap-2">
               <input v-model="formVeiculo.placa" type="text" class="form-control" placeholder="Placa" required maxlength="8" />
+              <input v-model="formVeiculo.renavam" type="text" class="form-control" placeholder="Renavam" required />
               <select v-model="formVeiculo.tipo" class="form-control w-auto" required>
                 <option value="CAMINHAO">Caminhão</option>
                 <option value="VAN">Van</option>
@@ -133,7 +134,7 @@ const formVinculo = ref({
 
 const formVeiculo = ref({
   placa: '',
-  renavam: '11111111111', // Dummy para simplificar
+  renavam: '',
   tipo: 'CAMINHAO'
 });
 
@@ -159,7 +160,7 @@ async function cadastrarVeiculo() {
       ...formVeiculo.value,
       empresaId: empresa.value.id
     });
-    formVeiculo.value = { placa: '', renavam: '11111111111', tipo: 'CAMINHAO' };
+    formVeiculo.value = { placa: '', renavam: '', tipo: 'CAMINHAO' };
     await carregarDados();
   } catch (error: any) {
     alert(error.response?.data?.erro || 'Erro ao cadastrar veículo');
