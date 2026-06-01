@@ -1,10 +1,18 @@
 <template>
   <div class="timer-container">
-    <div class="timer-text" :class="colorClass">
-      {{ formatTime(segundosRestantes) }}
+    <div class="timer-display">
+      <div class="timer-text" :class="colorClass">
+        {{ formatTime(segundosRestantes) }}
+      </div>
+      <div class="timer-label">Tempo Restante</div>
     </div>
     <div class="progress-bar-bg">
       <div class="progress-bar-fill" :class="colorClassBg" :style="{ width: percentual + '%' }"></div>
+    </div>
+    <div class="progress-labels">
+      <span>0%</span>
+      <span>{{ percentual.toFixed(0) }}%</span>
+      <span>100%</span>
     </div>
   </div>
 </template>
@@ -68,29 +76,51 @@ function formatTime(secs: number) {
 .timer-container {
   width: 100%;
 }
-.timer-text {
-  font-size: 2rem;
-  font-weight: bold;
+.timer-display {
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 12px;
+}
+.timer-text {
+  font-family: 'VT323', monospace;
+  font-size: 64px;
+  font-weight: bold;
+  background: #000000;
+  color: #00ff00;
+  padding: 16px 32px;
+  display: inline-block;
+  box-shadow: var(--inset-border);
+  letter-spacing: 8px;
+  line-height: 1;
+}
+.timer-label {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-top: 8px;
 }
 .progress-bar-bg {
   width: 100%;
-  height: 0.5rem;
-  background-color: var(--border);
-  border-radius: 9999px;
+  height: 20px;
+  background-color: var(--surface-raised);
+  box-shadow: var(--inset-border);
   overflow: hidden;
 }
 .progress-bar-fill {
   height: 100%;
-  transition: width 1s linear, background-color 0.5s;
+  transition: width 1s linear;
+}
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
-.text-green { color: var(--success); }
-.text-yellow { color: var(--warning); }
-.text-red { color: var(--danger); }
+.text-green { color: #00ff00; }
+.text-yellow { color: #ffff00; }
+.text-red { color: #ff0000; animation: blink-cursor 0.5s step-end infinite; }
 
-.bg-green { background-color: var(--success); }
-.bg-yellow { background-color: var(--warning); }
-.bg-red { background-color: var(--danger); }
+.bg-green { background-color: #008000; }
+.bg-yellow { background-color: #cc6600; }
+.bg-red { background-color: #cc0000; }
 </style>

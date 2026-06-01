@@ -1,15 +1,18 @@
 <template>
   <div class="motorista-mapa">
     <NavBar />
-    <div class="container mt-4">
-      <div class="header-actions mb-4">
-        <h2>Vagas Disponíveis</h2>
+    <div class="container mt-6">
+      <div class="header-simple flex justify-between items-center mb-6 border-b pb-4">
+        <div>
+          <h2 class="m-0">Vagas Disponíveis</h2>
+          <p class="text-muted text-sm m-0">Encontre e estacione seu veículo</p>
+        </div>
         <button 
           v-if="vagasStore.sessaoAtiva" 
-          class="btn btn-warning"
+          class="btn btn-primary"
           @click="irParaSessaoAtiva"
         >
-          ⏱️ Meu Check-in Ativo
+          Meu Check-in Ativo
         </button>
       </div>
 
@@ -21,20 +24,19 @@
       />
     </div>
 
-    <!-- Modal de Check-in (Pay-per-use) -->
+    <!-- Modal de Check-in -->
     <div v-if="vagaSelecionada" class="modal-overlay">
-      <div class="modal-content card">
-        <h3 class="mb-4">Check-in: Vaga {{ vagaSelecionada.codigo }}</h3>
+      <div class="card modal-content p-6">
+        <h3 class="mb-4 text-xl">Check-in: Vaga {{ vagaSelecionada.codigo }}</h3>
         
-        <div class="info-vaga mb-4 text-sm text-muted">
-          <div><strong>Local:</strong> {{ vagaSelecionada.logradouro }}, {{ vagaSelecionada.numero }}</div>
-          <div><strong>Tarifa:</strong> R$ {{ vagaSelecionada.valorMinuto?.toFixed(2) }} / min</div>
+        <div class="info-vaga mb-6 p-4 bg-gray-50 border rounded text-sm">
+          <div class="mb-2"><strong>Local:</strong> {{ vagaSelecionada.logradouro }}, {{ vagaSelecionada.numero }}</div>
+          <div class="mb-2"><strong>Tarifa:</strong> R$ {{ vagaSelecionada.valorMinuto?.toFixed(2) || '1.00' }} / min</div>
           <div><strong>Tempo Máximo:</strong> {{ vagaSelecionada.limiteTempo }} min</div>
         </div>
 
         <form @submit.prevent="confirmarCheckin">
-          <!-- Seleção de Veículo -->
-          <div class="form-group mb-3">
+          <div class="form-group mb-4">
             <label>Qual veículo você está usando?</label>
             <select v-model="form.veiculoId" class="form-control" required>
               <option value="" disabled>Selecione um veículo</option>
@@ -55,23 +57,22 @@
             </select>
           </div>
 
-          <!-- Seleção de Pagador (Carteira) -->
-          <div class="form-group mb-4">
+          <div class="form-group mb-6">
             <label>Quem vai pagar esta vaga?</label>
             <select v-model="form.carteiraSelecionada" class="form-control" required>
               <option value="" disabled>Selecione a carteira</option>
               <option :value="`MOTORISTA:${motoristaId}`">
-                Minha Carteira Pessoal (Saldo: R$ {{ saldoPessoal.toFixed(2) }})
+                Minha Carteira (Saldo: R$ {{ saldoPessoal.toFixed(2) }})
               </option>
               <option v-for="vinc in vinculos" :key="vinc.empresa.id" :value="`EMPRESA:${vinc.empresa.id}`">
-                Carteira {{ vinc.empresa.nome }} (Saldo: R$ {{ vinc.empresa.creditos.toFixed(2) }})
+                {{ vinc.empresa.nome }} (Saldo: R$ {{ vinc.empresa.creditos.toFixed(2) }})
               </option>
             </select>
           </div>
 
-          <div class="flex gap-2">
-            <button type="button" class="btn flex-1" style="background-color: var(--danger); color: white;" @click="vagaSelecionada = null">Cancelar</button>
-            <button type="submit" class="btn flex-1" style="background-color: #059669; color: white;">Iniciar Uso</button>
+          <div class="flex gap-4">
+            <button type="button" class="btn flex-1" @click="vagaSelecionada = null">Cancelar</button>
+            <button type="submit" class="btn btn-primary flex-1">Iniciar Uso</button>
           </div>
         </form>
       </div>
@@ -127,7 +128,6 @@ onUnmounted(() => {
   if (interval) clearInterval(interval);
 });
 
-// Computed properties para os selects
 const veiculosPessoais = computed(() => perfilCompleto.value?.veiculos || []);
 const vinculos = computed(() => perfilCompleto.value?.vinculos || []);
 const veiculosEmpresas = computed(() => {
@@ -167,29 +167,16 @@ async function confirmarCheckin() {
     motoristaId.value
   );
   
-  if (result.sucesso) {
+  if (result?.sucesso) {
     vagaSelecionada.value = null;
     router.push('/motorista/sessao-ativa');
   } else {
-    alert(result.erro);
+    alert(result?.erro || 'Erro ao fazer check-in');
   }
 }
 </script>
 
 <style scoped>
-.header-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.btn-warning {
-  background-color: var(--warning);
-  color: var(--text-main);
-  font-weight: bold;
-}
-.btn-warning:hover {
-  background-color: #ca8a04;
-}
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -198,12 +185,19 @@ async function confirmarCheckin() {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(2px);
 }
 .modal-content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: var(--radius);
   width: 90%;
   max-width: 500px;
+
+
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+.bg-gray-50 {
+
+}
+.rounded {
+  border-radius: var(--radius);
 }
 </style>

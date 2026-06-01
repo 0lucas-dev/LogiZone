@@ -1,20 +1,20 @@
 <template>
-  <div class="historico-view">
+  <div class="empresa-historico">
     <NavBar />
     <div class="container mt-6">
       <div class="header-simple border-b pb-4 mb-6">
-        <h2 class="m-0">Meu Histórico</h2>
-        <p class="text-muted text-sm m-0">Consulte todas as sessões de estacionamento realizadas com seus veículos.</p>
+        <h2 class="m-0">Histórico de Uso</h2>
+        <p class="text-muted text-sm m-0">Acompanhe as sessões onde a frota ou a carteira da empresa foi utilizada.</p>
       </div>
 
       <div class="card p-0">
         <div v-if="carregando" class="text-center p-6 text-muted">
           <div class="spinner mb-2"></div>
-          <div>Carregando histórico...</div>
+          <div>Buscando registros...</div>
         </div>
-
+        
         <div v-else-if="sessoes.length === 0" class="text-center p-6 text-muted">
-          <p>Nenhuma sessão encontrada no seu histórico.</p>
+          <p>Nenhum registro de uso encontrado para a empresa.</p>
         </div>
 
         <div v-else style="overflow-x: auto;">
@@ -24,9 +24,10 @@
                 <th>Data/Hora</th>
                 <th>Vaga</th>
                 <th>Veículo</th>
+                <th>Motorista</th>
                 <th>Duração</th>
                 <th>Status</th>
-                <th class="text-right">Valor Cobrado</th>
+                <th class="text-right">Custo / Pagador</th>
               </tr>
             </thead>
             <tbody>
@@ -36,36 +37,39 @@
                   <div class="text-xs text-muted">{{ formatarHora(sessao.iniciadaEm) }}</div>
                 </td>
                 <td>
-                  <div class="font-medium">{{ sessao.vaga?.codigo || 'Vaga #' + sessao.vagaId }}</div>
-                  <div class="text-xs text-muted">{{ sessao.vaga?.logradouro }}, {{ sessao.vaga?.numero }}</div>
+                  <div class="font-medium">{{ sessao.vaga?.codigo || 'ID ' + sessao.vagaId }}</div>
+                  <div class="text-xs text-muted" style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    {{ sessao.vaga?.logradouro || '' }}
+                  </div>
                 </td>
                 <td>
                   <div class="flex items-center gap-2">
                     <span class="badge-pill font-mono">
                       {{ sessao.veiculo?.placa || 'N/A' }}
                     </span>
-                    <span class="text-[10px] uppercase font-bold" :class="sessao.veiculo?.motoristaId === usuarioStore.motorista?.id ? 'text-primary' : 'text-warning'">
-                      {{ sessao.veiculo?.motoristaId === usuarioStore.motorista?.id ? 'Pessoal' : 'Empresa' }}
+                    <span class="text-[10px] uppercase font-bold" :class="sessao.veiculo?.empresaId === usuarioStore.empresa?.id ? 'text-primary' : 'text-muted'">
+                      {{ sessao.veiculo?.empresaId === usuarioStore.empresa?.id ? 'Frota' : 'Pessoal' }}
                     </span>
                   </div>
                 </td>
                 <td>
+                  <div class="font-medium">{{ sessao.motorista?.nome || 'Desconhecido' }}</div>
+                  <div class="text-xs text-muted">{{ sessao.motorista?.cpf || '' }}</div>
+                </td>
+                <td>
                   <div class="text-sm">
-                    <template v-if="sessao.encerradaEm">
-                      {{ calcularDuracao(sessao.iniciadaEm, sessao.encerradaEm) }}
-                    </template>
-                    <template v-else>Em andamento</template>
+                    {{ calcularDuracao(sessao.iniciadaEm, sessao.encerradaEm) }}
                   </div>
                 </td>
                 <td>
                   <BadgeStatus :status="sessao.status" />
                 </td>
                 <td class="text-right">
-                  <div class="font-bold" :class="sessao.pagadorTipo === 'MOTORISTA' && sessao.pagadorId === usuarioStore.motorista?.id ? 'text-danger' : 'text-muted'">
-                    {{ sessao.valorCobrado != null ? `R$ ${sessao.valorCobrado.toFixed(2)}` : 'R$ 0.00' }}
+                  <div class="font-bold" :class="sessao.pagadorTipo === 'EMPRESA' && sessao.pagadorId === usuarioStore.empresa?.id ? 'text-danger' : 'text-muted'">
+                    R$ {{ sessao.valorCobrado?.toFixed(2) || '0.00' }}
                   </div>
-                  <div class="text-[10px] uppercase font-bold" :class="sessao.pagadorTipo === 'MOTORISTA' && sessao.pagadorId === usuarioStore.motorista?.id ? 'text-danger' : 'text-muted'">
-                    Saldo {{ sessao.pagadorTipo === 'MOTORISTA' && sessao.pagadorId === usuarioStore.motorista?.id ? 'Pessoal' : 'Empresa' }}
+                  <div class="text-[10px] uppercase font-bold" :class="sessao.pagadorTipo === 'EMPRESA' && sessao.pagadorId === usuarioStore.empresa?.id ? 'text-danger' : 'text-muted'">
+                    Saldo {{ sessao.pagadorTipo === 'EMPRESA' && sessao.pagadorId === usuarioStore.empresa?.id ? 'Empresa' : 'Pessoal' }}
                   </div>
                 </td>
               </tr>
@@ -91,30 +95,13 @@ const carregando = ref(true);
 
 onMounted(async () => {
   try {
-    if (!usuarioStore.motorista?.id) {
-      carregando.value = false;
-      return;
+    const empresaId = usuarioStore.empresa?.id;
+    if (!empresaId) return;
+    
+    const response = await axios.get(`/api/empresas/${empresaId}/historico`);
+    if (response.data.sucesso) {
+      sessoes.value = response.data.sessoes;
     }
-    
-    const perfilRes = await axios.get(`/api/motoristas/${usuarioStore.motorista.id}/perfil`);
-    const perfil = perfilRes.data.dados;
-    
-    const allSessoes: Sessao[] = [];
-    const veiculos = perfil?.veiculos || [];
-    
-    for (const v of veiculos) {
-      try {
-        const vRes = await axios.get(`/api/veiculos/${v.placa}`);
-        if (vRes.data.sucesso && vRes.data.dados.sessoes) {
-          allSessoes.push(...vRes.data.dados.sessoes);
-        }
-      } catch {
-        // Skip errors
-      }
-    }
-    
-    allSessoes.sort((a, b) => new Date(b.iniciadaEm).getTime() - new Date(a.iniciadaEm).getTime());
-    sessoes.value = allSessoes;
   } catch (error) {
     console.error('Erro ao buscar histórico', error);
   } finally {
@@ -130,7 +117,8 @@ function formatarHora(dataString: string) {
   return new Date(dataString).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
-function calcularDuracao(inicio: string, fim: string) {
+function calcularDuracao(inicio: string, fim: string | null) {
+  if (!fim) return 'Em andamento';
   const diffMs = new Date(fim).getTime() - new Date(inicio).getTime();
   const minutos = Math.floor(diffMs / 60000);
   

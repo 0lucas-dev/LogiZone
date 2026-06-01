@@ -56,25 +56,15 @@ model Sessao {
   motorista      Motorista? @relation(fields: [motoristaId], references: [id])
 }
 
-model Fiscal {
-  id        Int        @id @default(autoincrement())
-  nome      String
-  matricula String     @unique
-  setor     String
-  infracoes Infracao[]
-}
-
 model Infracao {
   id           Int      @id @default(autoincrement())
   veiculoId    Int?
   placaAvulsa  String?
   vagaId       Int
-  fiscalId     Int
   motivo       String
   registradaEm DateTime @default(now())
   observacao   String?
   vaga         Vaga     @relation(fields: [vagaId], references: [id])
-  fiscal       Fiscal   @relation(fields: [fiscalId], references: [id])
   veiculo      Veiculo? @relation(fields: [veiculoId], references: [id])
 }
 

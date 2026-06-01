@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { prisma } from "../server.js";
+import { prisma } from "../lib/prisma.js";
 
 const router = Router();
 
@@ -137,6 +137,34 @@ router.post("/:id/desvincular", async (req, res) => {
     res.json({ sucesso: true, vinculo });
   } catch (error) {
     res.status(500).json({ erro: "Erro ao desvincular motorista" });
+  }
+});
+
+// Histórico de Sessões da Empresa
+router.get("/:id/historico", async (req, res) => {
+  try {
+    const empresaId = parseInt(req.params.id);
+
+    const sessoes = await prisma.sessao.findMany({
+      where: {
+        OR: [
+          { pagadorTipo: "EMPRESA", pagadorId: empresaId },
+          { veiculo: { empresaId: empresaId } }
+        ]
+      },
+      include: {
+        vaga: true,
+        veiculo: true,
+        motorista: true
+      },
+      orderBy: {
+        iniciadaEm: 'desc'
+      }
+    });
+
+    res.json({ sucesso: true, sessoes });
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao buscar histórico da empresa" });
   }
 });
 

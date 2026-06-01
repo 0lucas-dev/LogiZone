@@ -1,33 +1,34 @@
 <template>
   <div class="cadastro-container container">
     <div class="card login-card">
-      <h2 class="text-center mb-4">Criar Conta Motorista</h2>
+      <h3>📝 Criar Conta Motorista</h3>
       
-      <form @submit.prevent="cadastrar">
+      <form @submit.prevent="cadastrar" class="p-2">
         <div class="form-group">
-          <label for="cpf">CPF</label>
+          <label for="cpf">CPF:</label>
           <input id="cpf" v-model="form.cpf" type="text" class="form-control" required placeholder="000.000.000-00" />
         </div>
         
         <div class="form-group mt-3">
-          <label for="nome">Nome Completo</label>
+          <label for="nome">Nome Completo:</label>
           <input id="nome" v-model="form.nome" type="text" class="form-control" required />
         </div>
 
         <div class="form-group mt-3">
-          <label for="senha">Senha</label>
+          <label for="senha">Senha:</label>
           <input id="senha" v-model="form.senha" type="password" class="form-control" required />
         </div>
 
-        <div v-if="erro" class="erro-msg mt-4">{{ erro }}</div>
+        <div v-if="erro" class="erro-msg mt-4">⚠ {{ erro }}</div>
 
-        <button type="submit" class="btn mt-4 w-full" style="background-color:#4f46e5;color:white" :disabled="carregando">
-          {{ carregando ? 'Cadastrando...' : 'Cadastrar' }}
+        <button type="submit" class="btn btn-primary mt-4 w-full" :disabled="carregando">
+          {{ carregando ? '▶ Cadastrando...' : '[ CADASTRAR ]' }}
         </button>
       </form>
 
-      <div class="text-center mt-4">
-        <p>Já tem cadastro? <RouterLink to="/motorista/login">Faça Login</RouterLink></p>
+      <hr />
+      <div class="text-center">
+        <p>Já tem cadastro? <RouterLink to="/motorista/login">→ Faça Login</RouterLink></p>
       </div>
     </div>
   </div>
@@ -87,9 +88,9 @@ async function cadastrar() {
 }
 .erro-msg {
   color: var(--danger);
-  font-size: 0.875rem;
-  background-color: #fee2e2;
-  padding: 0.5rem;
-  border-radius: var(--radius);
+  font-size: 16px;
+  background-color: var(--danger-bg);
+  padding: 8px;
+  box-shadow: var(--inset-border);
 }
 </style>

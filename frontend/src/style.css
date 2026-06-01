@@ -1,165 +1,306 @@
+/* ═══════════════════════════════════════════════════════════
+   LogiZone — Portal de Gestão de Vagas
+   Design System: Escuro e Destacado (High Contrast Dark Theme)
+   ═══════════════════════════════════════════════════════════ */
+
 :root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --secondary: #64748b;
-  --success: #22c55e;
-  --warning: #eab308;
-  --danger: #ef4444;
-  --background: #f8fafc;
-  --surface: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --radius: 8px;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  /* Tema Escuro e Elementos Destacados (Estilo Corporate Tech) */
+  --primary: #f97316;       /* Laranja vibrante - Destaque Principal */
+  --primary-hover: #ea580c; /* Laranja mais escuro para hover */
+  --bg-color: #0b1120;      /* Fundo principal azul muito escuro */
+  --card-bg: #1e293b;       /* Fundo de cards/painéis azul acinzentado */
+  --surface-hover: #334155; /* Cor para hover em botões flat */
+  
+  --text-main: #f8fafc;     /* Texto claro principal */
+  --text-muted: #94a3b8;    /* Texto secundário */
+  
+  --border-color: #334155;  /* Bordas visíveis mas discretas */
+  --border-focus: #475569;  /* Bordas em foco */
+  
+  --accent: #38bdf8;        /* Azul claro para links e pequenos detalhes */
+
+  /* Alertas Destacados e Claros */
+  --success: #10b981;       /* Verde elétrico */
+  --danger: #ef4444;        /* Vermelho vibrante */
+  --warning: #f59e0b;       /* Laranja/Amarelo */
+
+  /* Espaçamento e Bordas */
+  --radius: 8px;            /* Bordas um pouco mais arredondadas para design moderno */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
 }
 
-* {
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
+html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--background);
+  background-color: var(--bg-color);
   color: var(--text-main);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Tipografia Básica ─────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.02em;
 }
 
 a {
+  color: var(--accent);
   text-decoration: none;
-  color: var(--primary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+a:hover {
+  text-decoration: underline;
+  color: #7dd3fc;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
+/* ── Estrutura e Grid ──────────────────────────────────── */
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
 }
 
+.grid {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ── Componentes Básicos (Botões, Inputs, Cards) ──────── */
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--spacing-lg);
+  background: var(--card-bg);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Botões Destacados */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-main);
   border-radius: var(--radius);
-  transition: all 0.2s;
-  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.btn:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-focus);
 }
 
 .btn-primary {
   background-color: var(--primary);
-  color: white;
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.4); /* Glow effect for prominence */
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover {
   background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 0 15px rgba(234, 88, 12, 0.6);
+  color: #ffffff;
 }
 
 .btn-danger {
-  background-color: var(--danger);
-  color: white;
+  color: var(--danger);
+  border-color: var(--danger);
 }
-
-.btn-danger:hover:not(:disabled) {
-  opacity: 0.9;
+.btn-danger:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
 }
 
 .btn-outline {
-  border: 1px solid var(--border);
-  background-color: var(--surface);
-  color: var(--text-main);
+  border-color: var(--primary);
+  color: var(--primary);
 }
-
-.btn-outline:hover:not(:disabled) {
-  background-color: var(--background);
+.btn-outline:hover {
+  background-color: rgba(59, 130, 246, 0.1);
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none !important;
 }
 
-.card {
-  background-color: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.5rem;
-  border: 1px solid var(--border);
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
+/* Formulários Destacados */
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border);
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  background-color: #0b1120;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s;
 }
 
 .form-control:focus {
-  outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
-.text-center {
-  text-align: center;
+.form-control::placeholder {
+  color: #475569;
 }
 
-.mt-4 {
-  margin-top: 1rem;
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
+/* ── Tabelas ───────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
 }
 
-.flex {
-  display: flex;
+th {
+  text-align: left;
+  padding: 14px 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border-color);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
 }
 
-.gap-4 {
-  gap: 1rem;
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.grid {
-  display: grid;
-  gap: 1.5rem;
+tr:last-child td {
+  border-bottom: none;
 }
 
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+tr:hover td {
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
-@media (min-width: 768px) {
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .md\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+/* ── Badges e Tags ─────────────────────────────────────── */
+.badge-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  background-color: var(--surface-hover);
+  color: var(--text-main);
+  border: 1px solid var(--border-focus);
+}
+
+.text-primary { color: var(--primary); }
+.text-success, .bg-success { color: var(--success); }
+.text-danger, .bg-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+
+/* Remove fundos inline que quebram o tema escuro */
+.bg-gray-50, .bg-gray-100, .bg-white { 
+  background-color: var(--card-bg) !important; 
+  border-color: var(--border-color) !important;
+}
+
+/* ── Utilitários ───────────────────────────────────────── */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: var(--text-muted); }
+.text-sm { font-size: 14px; }
+.text-xs { font-size: 12px; }
+
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.p-0 { padding: 0; }
+.p-2 { padding: 8px; }
+.p-4 { padding: 16px; }
+.px-4 { padding-left: 16px; padding-right: 16px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+
+.flex { display: flex; }
+.flex-1 { flex: 1; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+.border-b { border-bottom: 1px solid var(--border-color); }
+.border-t { border-top: 1px solid var(--border-color); }
+
+/* Spinners e animações mínimas */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }

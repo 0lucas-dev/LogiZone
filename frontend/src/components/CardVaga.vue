@@ -1,18 +1,20 @@
 <template>
   <div class="card card-vaga">
-    <div class="card-header">
-      <h3>{{ vaga.codigo }}</h3>
-      <BadgeStatus :status="vaga.status" />
-    </div>
+    <h3>
+      {{ vaga.codigo }}
+      <span style="float:right; font-family: var(--font-body); font-size: 14px;">
+        <BadgeStatus :status="vaga.status" />
+      </span>
+    </h3>
     
     <div class="card-body">
-      <p class="endereco">{{ vaga.logradouro }}, {{ vaga.numero }}</p>
+      <p class="endereco">📍 {{ vaga.logradouro }}, {{ vaga.numero }}</p>
       <p class="bairro">{{ vaga.bairro }}</p>
       
       <div v-if="vaga.status === 'OCUPADA' || vaga.status === 'IRREGULAR'" class="info-sessao mt-4">
-        <p v-if="vaga.sessaoAtual">Placa: {{ vaga.sessaoAtual.veiculo.placa }}</p>
-        <p v-if="vaga.sessaoAtual">Empresa: {{ vaga.sessaoAtual.veiculo.empresa }}</p>
-        <p v-if="vaga.sessaoAtual" class="tempo">Tempo restante: <strong>{{ vaga.sessaoAtual.minutosRestantes }} min</strong></p>
+        <div class="info-sessao-title">── Sessão Ativa ──</div>
+        <p v-if="vaga.sessaoAtual">Placa: <strong>{{ vaga.sessaoAtual.veiculo.placa }}</strong></p>
+        <p v-if="vaga.sessaoAtual">Tempo restante: <strong class="tempo-valor">{{ vaga.sessaoAtual.minutosRestantes }} min</strong></p>
       </div>
       
       <slot name="extra"></slot>
@@ -24,7 +26,7 @@
         :disabled="vaga.status !== 'LIVRE'"
         @click="$emit('checkin', vaga.id)"
       >
-        Fazer Check-in
+        [ CHECK-IN ]
       </button>
     </div>
   </div>
@@ -49,34 +51,30 @@ defineEmits<{
   display: flex;
   flex-direction: column;
 }
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
-}
-.card-header h3 {
-  font-size: 1.25rem;
-  margin: 0;
+.card-body {
+  flex: 1;
 }
 .endereco {
   font-weight: 500;
-  margin-bottom: 0.25rem;
+  margin-bottom: 4px;
 }
 .bairro {
   color: var(--text-muted);
-  font-size: 0.875rem;
+  font-size: 16px;
 }
 .info-sessao {
-  background-color: var(--background);
-  padding: 0.75rem;
-  border-radius: var(--radius);
-  font-size: 0.875rem;
+  background-color: var(--surface-raised);
+  padding: 8px;
+  box-shadow: var(--inset-border);
+  font-size: 16px;
 }
-.tempo {
-  margin-top: 0.5rem;
+.info-sessao-title {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.tempo-valor {
   color: var(--warning);
 }
 .card-footer {

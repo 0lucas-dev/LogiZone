@@ -12,11 +12,11 @@ const props = defineProps<{
 }>();
 
 const statusLabel = computed(() => {
-  if (props.status === 'LIVRE') return '🟢 LIVRE';
-  if (props.status === 'OCUPADA') return '🟡 OCUPADA';
-  if (props.status === 'IRREGULAR') return '🔴 IRREGULAR';
-  if (props.status === 'EXPIRADA') return '🔴 EXPIRADA';
-  if (props.status === 'ENCERRADA') return '⚫ ENCERRADA';
+  if (props.status === 'LIVRE') return '■ LIVRE';
+  if (props.status === 'OCUPADA') return '■ OCUPADA';
+  if (props.status === 'IRREGULAR') return '■ IRREGULAR';
+  if (props.status === 'EXPIRADA') return '■ EXPIRADA';
+  if (props.status === 'ENCERRADA') return '■ ENCERRADA';
   return props.status;
 });
 
@@ -33,30 +33,34 @@ const badgeClass = computed(() => {
 <style scoped>
 .badge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 600;
+  padding: 2px 8px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: bold;
   white-space: nowrap;
+  box-shadow: var(--inset-border);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .badge-livre {
-  background-color: #dcfce7;
-  color: #166534;
+  background-color: #00ff00;
+  color: #003300;
 }
 
 .badge-ocupada {
-  background-color: #fef08a;
-  color: #854d0e;
+  background-color: #ffff00;
+  color: #333300;
 }
 
 .badge-irregular {
-  background-color: #fee2e2;
-  color: #991b1b;
+  background-color: #ff0000;
+  color: #ffffff;
+  animation: blink-cursor 1s step-end infinite;
 }
 
 .badge-encerrada {
-  background-color: #f1f5f9;
-  color: #475569;
+  background-color: #808080;
+  color: #ffffff;
 }
 </style>

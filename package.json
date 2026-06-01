@@ -1,5 +1,5 @@
 {
-  "name": "cargoslot",
+  "name": "logizone",
   "private": true,
   "scripts": {
     "dev": "pnpm --parallel -r dev",

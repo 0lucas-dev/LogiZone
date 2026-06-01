@@ -1,117 +1,112 @@
 <template>
   <div class="empresa-dashboard">
     <NavBar />
-    <div class="container mt-4">
-      <div class="header flex justify-between items-center mb-6">
-        <h2>Painel da Empresa</h2>
-        <div class="card p-3" style="min-width: 200px">
-          <div class="text-sm text-muted">Saldo de Créditos</div>
-          <div class="text-2xl font-bold text-green-600">R$ {{ empresa?.creditos.toFixed(2) }}</div>
-          <button @click="adicionarCreditos" class="btn btn-sm btn-outline mt-2 w-full">+ Adicionar</button>
+    <div class="container mt-6">
+      
+      <div class="header-simple flex justify-between items-center mb-6 border-b pb-4">
+        <div>
+          <h2 class="m-0">Dashboard Empresa</h2>
+          <p class="text-muted text-sm m-0">Gestão de frota e créditos</p>
+        </div>
+
+        <div class="text-right">
+          <div class="text-xs text-muted mb-1">Saldo em Créditos</div>
+          <div class="text-xl font-bold mb-2">R$ {{ empresa?.creditos?.toFixed(2) || '0.00' }}</div>
+          <button @click="adicionarCreditos" class="btn btn-outline btn-sm">Adicionar Fundos</button>
         </div>
       </div>
 
-      <div class="card mb-4">
-        <h3>Vincular Motorista (Autorizar Uso de Créditos)</h3>
-        <form @submit.prevent="vincularMotorista">
-          <div class="grid md:grid-cols-3 gap-3">
-            <div class="form-group">
-              <label>CPF do Motorista</label>
-              <input v-model="formVinculo.cpf" type="text" class="form-control" required placeholder="000.000.000-00" />
-            </div>
-            <div class="form-group">
-              <label>Tipo de Vínculo</label>
-              <select v-model="formVinculo.tipoAcesso" class="form-control">
-                <option value="FIXO">Fixo (Sempre Ativo)</option>
-                <option value="TEMPORARIO">Temporário (Autônomo)</option>
-              </select>
-            </div>
-            <div class="form-group" v-if="formVinculo.tipoAcesso === 'TEMPORARIO'">
-              <label>Validade (Horas)</label>
-              <input v-model="horasValidade" type="number" class="form-control" required min="1" />
-            </div>
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+        
+        <!-- Motoristas -->
+        <div class="card p-0">
+          <div class="p-4 border-b flex justify-between items-center">
+            <h3 class="m-0 text-lg">Vínculos de Motoristas</h3>
           </div>
-          <button type="submit" class="btn mt-3" style="background-color:#4f46e5;color:white">Vincular Motorista</button>
-        </form>
-      </div>
+          
+          <div class="p-4 bg-gray-50 border-b">
+            <form @submit.prevent="vincularMotorista" class="flex gap-2">
+              <input v-model="formVinculo.cpf" type="text" class="form-control" required placeholder="CPF: 000.000.000-00" />
+              <button type="submit" class="btn btn-primary">Vincular</button>
+            </form>
+          </div>
 
-      <div class="grid md:grid-cols-2 gap-4 mb-4">
-        <div class="card">
-          <h3>Motoristas Vinculados</h3>
-          <table class="w-full text-left border-collapse mt-3">
-            <thead>
-              <tr class="border-b">
-                <th class="p-2">Nome / CPF</th>
-                <th class="p-2">Acesso</th>
-                <th class="p-2">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="v in vinculos" :key="v.id" class="border-b">
-                <td class="p-2">{{ v.motorista.nome }}<br><small class="text-muted">{{ v.motorista.cpf }}</small></td>
-                <td class="p-2">
-                  <span class="badge" :class="v.status === 'ATIVO' ? 'badge-ativo' : 'badge-desativado'">{{ v.status }}</span><br>
-                  <small class="text-xs">{{ v.tipoAcesso }}</small>
-                </td>
-                <td class="p-2">
-                  <button v-if="v.status === 'ATIVO'" @click="desvincular(v.motorista.id)" class="text-red-600 underline text-sm">
-                    Desvincular
-                  </button>
-                </td>
-              </tr>
-              <tr v-if="vinculos.length === 0">
-                <td colspan="3" class="p-4 text-center text-muted">Nenhum motorista vinculado.</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="p-0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF</th>
+                  <th class="text-right">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="v in vinculos" :key="v.id">
+                  <td class="font-medium">{{ v.motorista.nome }}</td>
+                  <td class="text-muted">{{ v.motorista.cpf }}</td>
+                  <td class="text-right">
+                    <button v-if="v.status === 'ATIVO'" @click="desvincular(v.motorista.id)" class="btn btn-sm text-danger" style="border:none">
+                      Remover
+                    </button>
+                  </td>
+                </tr>
+                <tr v-if="vinculos.length === 0">
+                  <td colspan="3" class="text-center text-muted p-4">Nenhum vínculo.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Veículos da Empresa</h3>
-          <form @submit.prevent="cadastrarVeiculo" class="mb-4 pb-4 border-b">
-            <div class="grid grid-cols-2 gap-2 mb-2">
+        <!-- Veículos -->
+        <div class="card p-0">
+          <div class="p-4 border-b flex justify-between items-center">
+            <h3 class="m-0 text-lg">Frota Cadastrada</h3>
+          </div>
+          
+          <div class="p-4 bg-gray-50 border-b">
+            <form @submit.prevent="cadastrarVeiculo" class="flex gap-2">
               <input v-model="formVeiculo.placa" type="text" class="form-control" placeholder="Placa" required maxlength="8" />
-              <input v-model="formVeiculo.renavam" type="text" class="form-control" placeholder="RENAVAM" required />
-            </div>
-            <div class="flex gap-2">
-              <select v-model="formVeiculo.tipo" class="form-control" required>
+              <select v-model="formVeiculo.tipo" class="form-control w-auto" required>
                 <option value="CAMINHAO">Caminhão</option>
                 <option value="VAN">Van</option>
                 <option value="UTILITARIO">Utilitário</option>
               </select>
-              <button type="submit" class="btn btn-secondary flex-1" style="background-color: var(--primary); color: white;">Adicionar</button>
-            </div>
-          </form>
+              <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+          </div>
 
-          <div class="veiculos-lista">
-            <div v-for="v in empresa?.veiculos" :key="v.id" class="p-2 border rounded mb-2">
+          <div class="p-4">
+            <div v-for="v in empresa?.veiculos" :key="v.id" class="mb-4 pb-4 border-b last:border-0 last:pb-0 last:mb-0">
               <div class="flex justify-between items-center mb-2">
-                <div>
-                  <strong>{{ v.placa }}</strong> <span class="text-xs text-muted">({{ v.tipo }})</span>
-                </div>
+                <span class="font-bold font-mono">{{ v.placa }}</span>
+                <span class="text-xs text-muted">{{ v.tipo }}</span>
               </div>
-              <div class="mt-2 pt-2 border-t text-sm">
-                <div class="font-bold mb-1 text-xs text-muted">Atribuir Motorista:</div>
-                <div class="flex gap-2">
-                  <select class="form-control text-sm py-1" v-model="v.novoMotoristaId">
-                    <option :value="undefined" disabled>Selecione...</option>
-                    <option v-for="vinc in vinculos.filter(vi => vi.status === 'ATIVO')" :key="vinc.motorista.id" :value="vinc.motorista.id">
-                      {{ vinc.motorista.nome }} ({{ vinc.motorista.cpf }})
+              
+              <div class="text-sm">
+                <div class="flex gap-2 mb-2">
+                  <select class="form-control text-sm py-1 px-2 h-8" v-model="v.novoMotoristaId">
+                    <option :value="undefined" disabled>Atribuir motorista...</option>
+                    <option v-for="vinc in vinculos.filter((vi: any) => vi.status === 'ATIVO')" :key="vinc.motorista.id" :value="vinc.motorista.id">
+                      {{ vinc.motorista.nome }}
                     </option>
                   </select>
-                  <button @click="atribuirMotorista(v.id, v.novoMotoristaId)" class="btn btn-sm btn-outline py-1">Atribuir</button>
+                  <button @click="atribuirMotorista(v.id, v.novoMotoristaId)" class="btn btn-sm btn-outline h-8">Atribuir</button>
                 </div>
                 
-                <div class="mt-2" v-if="v.atribuicoes && v.atribuicoes.length > 0">
-                  <div class="text-xs text-muted mb-1 font-bold">Motoristas Atribuídos:</div>
-                  <div v-for="atr in v.atribuicoes" :key="atr.id" class="flex justify-between items-center bg-gray-50 p-1 mb-1 rounded text-xs">
+                <div v-if="v.atribuicoes && v.atribuicoes.length > 0">
+                  <div class="text-xs text-muted mb-1 mt-2">No veículo:</div>
+                  <div v-for="atr in v.atribuicoes" :key="atr.id" class="flex justify-between items-center py-1 text-xs">
                     <span>{{ atr.motorista.nome }}</span>
-                    <button @click="desatribuirMotorista(v.id, atr.motoristaId)" class="text-red-500 underline text-xs">Remover</button>
+                    <button @click="desatribuirMotorista(v.id, atr.motoristaId)" class="text-danger" style="background:none;border:none;cursor:pointer;">
+                      Remover
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="!empresa?.veiculos?.length" class="text-sm text-muted">
+            
+            <div v-if="!empresa?.veiculos?.length" class="text-center text-muted p-4">
               Nenhum veículo cadastrado.
             </div>
           </div>
@@ -135,20 +130,20 @@ const formVinculo = ref({
   cpf: '',
   tipoAcesso: 'FIXO'
 });
-const horasValidade = ref(24);
 
 const formVeiculo = ref({
   placa: '',
-  renavam: '',
+  renavam: '11111111111', // Dummy para simplificar
   tipo: 'CAMINHAO'
 });
 
 async function carregarDados() {
-  const empId = usuarioStore.empresa.id;
+  const empId = usuarioStore.empresa?.id;
+  if (!empId) return;
   try {
     const res = await axios.get(`/api/empresas/${empId}`);
     empresa.value = res.data;
-    vinculos.value = res.data.vinculos;
+    vinculos.value = res.data.vinculos || [];
   } catch (error) {
     console.error(error);
   }
@@ -164,8 +159,7 @@ async function cadastrarVeiculo() {
       ...formVeiculo.value,
       empresaId: empresa.value.id
     });
-    alert('Veículo cadastrado!');
-    formVeiculo.value = { placa: '', renavam: '', tipo: 'CAMINHAO' };
+    formVeiculo.value = { placa: '', renavam: '11111111111', tipo: 'CAMINHAO' };
     await carregarDados();
   } catch (error: any) {
     alert(error.response?.data?.erro || 'Erro ao cadastrar veículo');
@@ -173,7 +167,7 @@ async function cadastrarVeiculo() {
 }
 
 async function atribuirMotorista(veiculoId: number, motoristaId?: number) {
-  if (!motoristaId) return alert("Selecione um motorista primeiro.");
+  if (!motoristaId) return;
   try {
     await axios.post(`/api/veiculos/${veiculoId}/atribuir`, { motoristaId });
     await carregarDados();
@@ -192,7 +186,7 @@ async function desatribuirMotorista(veiculoId: number, motoristaId: number) {
 }
 
 async function adicionarCreditos() {
-  const valorStr = prompt("Valor a recarregar (Simulação):");
+  const valorStr = prompt("Valor a recarregar:");
   if (!valorStr) return;
   const valor = parseFloat(valorStr);
   if (valor > 0) {
@@ -203,17 +197,10 @@ async function adicionarCreditos() {
 
 async function vincularMotorista() {
   try {
-    let expiraEm = null;
-    if (formVinculo.value.tipoAcesso === 'TEMPORARIO') {
-      expiraEm = new Date();
-      expiraEm.setHours(expiraEm.getHours() + horasValidade.value);
-    }
-
     await axios.post(`/api/empresas/${empresa.value.id}/vincular`, {
       ...formVinculo.value,
-      expiraEm
+      expiraEm: null
     });
-    alert('Motorista vinculado com sucesso!');
     formVinculo.value = { cpf: '', tipoAcesso: 'FIXO' };
     await carregarDados();
   } catch (error: any) {
@@ -232,12 +219,19 @@ async function desvincular(motoristaId: number) {
 </script>
 
 <style scoped>
-.badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: bold;
+.font-mono {
+  font-family: monospace;
 }
-.badge-ativo { background-color: #d1fae5; color: #065f46; }
-.badge-desativado { background-color: #fee2e2; color: #b91c1c; }
+.bg-gray-50 {
+
+}
+.last\:border-0:last-child {
+  border-bottom: 0;
+}
+.last\:pb-0:last-child {
+  padding-bottom: 0;
+}
+.last\:mb-0:last-child {
+  margin-bottom: 0;
+}
 </style>

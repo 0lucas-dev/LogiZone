@@ -1,6 +1,6 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { prisma } from "../server.js";
+import { prisma } from "../lib/prisma.js";
 import { createVeiculoSchema } from "../validators/veiculos.validator.js";
 
 const router = Router();

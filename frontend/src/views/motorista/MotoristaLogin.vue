@@ -1,7 +1,7 @@
 <template>
   <div class="login-container container">
     <div class="card login-card">
-      <h2 class="text-center mb-4">Login do Motorista</h2>
+      <h2 class="text-center mb-6 text-2xl font-bold text-navy">Acesso Motorista</h2>
       
       <form @submit.prevent="fazerLogin">
         <div class="form-group">
@@ -9,24 +9,24 @@
           <input id="cpf" v-model="form.cpf" type="text" class="form-control" required placeholder="000.000.000-00" />
         </div>
         
-        <div class="form-group mt-3">
+        <div class="form-group mb-6">
           <label for="senha">Senha</label>
           <input id="senha" v-model="form.senha" type="password" class="form-control" required />
         </div>
 
-        <div v-if="erro" class="erro-msg mt-4">{{ erro }}</div>
+        <div v-if="erro" class="mb-4 text-danger text-sm font-medium">{{ erro }}</div>
 
-        <button type="submit" class="btn mt-4 w-full" style="background-color:#4f46e5;color:white" :disabled="carregando">
+        <button type="submit" class="btn btn-primary w-full" :disabled="carregando">
           {{ carregando ? 'Entrando...' : 'Entrar' }}
         </button>
       </form>
 
-      <div class="text-center mt-4">
-        <p>Não tem conta?</p>
-        <RouterLink to="/motorista/cadastro">Cadastre-se</RouterLink>
+      <div class="mt-6 pt-6 border-t text-center text-sm">
+        <span class="text-muted">Não tem conta?</span>
+        <RouterLink to="/motorista/cadastro" class="ml-2">Cadastre-se</RouterLink>
       </div>
       <div class="text-center mt-4">
-        <RouterLink to="/">Voltar ao Início</RouterLink>
+        <RouterLink to="/" class="text-sm text-muted">← Voltar ao Início</RouterLink>
       </div>
     </div>
   </div>
@@ -78,16 +78,16 @@ async function fazerLogin() {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+
 }
 .login-card {
   width: 100%;
   max-width: 400px;
+
+
+
 }
-.erro-msg {
-  color: var(--danger);
-  font-size: 0.875rem;
-  background-color: #fee2e2;
-  padding: 0.5rem;
-  border-radius: var(--radius);
+.text-navy {
+  color: var(--primary);
 }
 </style>

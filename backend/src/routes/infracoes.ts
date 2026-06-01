@@ -1,6 +1,6 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { prisma } from "../server.js";
+import { prisma } from "../lib/prisma.js";
 import { createInfracaoSchema } from "../validators/infracoes.validator.js";
 
 const router = Router();
@@ -20,7 +20,6 @@ router.post("/", async (req: Request, res: Response) => {
     const infracao = await prisma.infracao.create({
       data: {
         vagaId: data.vagaId,
-        fiscalId: data.fiscalId,
         motivo: data.motivo,
         observacao: data.observacao,
         placaAvulsa: data.placaAvulsa,
@@ -41,13 +40,11 @@ router.get("/", async (req: Request, res: Response) => {
     const where: any = {};
 
     if (vagaId) where.vagaId = parseInt(vagaId as string);
-    if (fiscalId) where.fiscalId = parseInt(fiscalId as string);
 
     const infracoes = await prisma.infracao.findMany({
       where,
       include: {
         vaga: true,
-        fiscal: true,
         veiculo: true
       },
       orderBy: {

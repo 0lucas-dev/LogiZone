@@ -7,6 +7,8 @@ export interface Vaga {
   cidade: string;
   latitude: number;
   longitude: number;
+  tamanho?: string;
+  valorMinuto?: number;
   limiteTempo: number;
   ativa: boolean;
   status: "LIVRE" | "OCUPADA" | "IRREGULAR";
@@ -19,7 +21,6 @@ export interface SessaoAtual {
   minutosRestantes: number;
   veiculo: {
     placa: string;
-    empresa: string;
   };
 }
 
@@ -27,26 +28,22 @@ export interface Veiculo {
   id: number;
   placa: string;
   renavam: string;
-  cnpj: string;
-  empresa: string;
   tipo: "CAMINHAO" | "VAN" | "UTILITARIO";
-}
-
-export interface Fiscal {
-  id: number;
-  nome: string;
-  matricula: string;
-  setor: string;
+  empresaId?: number;
+  motoristaId?: number;
 }
 
 export interface Sessao {
   id: number;
   vagaId: number;
   veiculoId: number;
+  motoristaId?: number;
   iniciadaEm: string;
   encerradaEm: string | null;
   status: "ATIVA" | "ENCERRADA" | "EXPIRADA";
+  valorCobrado?: number;
   minutosRestantes?: number;
+  valorAtual?: number;
   vaga?: Vaga;
   veiculo?: Veiculo;
 }
@@ -54,13 +51,12 @@ export interface Sessao {
 export interface Infracao {
   id: number;
   vagaId: number;
-  fiscalId: number;
+  veiculoId?: number;
   placaAvulsa: string | null;
   motivo: "SEM_CHECKIN" | "TEMPO_EXPIRADO" | "VEICULO_NAO_AUTORIZADO";
   observacao: string | null;
   registradaEm: string;
   vaga?: Vaga;
-  fiscal?: Fiscal;
   veiculo?: Veiculo;
 }
 
@@ -80,4 +76,22 @@ export interface MapaCalorItem {
   lat: number;
   lng: number;
   totalSessoes30dias: number;
+}
+
+export interface Empresa {
+  id: number;
+  cnpj: string;
+  nome: string;
+  tipo: string;
+  creditos: number;
+  veiculos?: Veiculo[];
+}
+
+export interface Motorista {
+  id: number;
+  cpf: string;
+  nome: string;
+  creditos: number;
+  status: string;
+  veiculos?: Veiculo[];
 }

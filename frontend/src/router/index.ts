@@ -44,42 +44,6 @@ const router = createRouter({
       component: () => import('@/views/motorista/MotoristaHistorico.vue'),
       meta: { requiresAuth: true, perfil: 'motorista' }
     },
-    // Rotas do Fiscal
-    {
-      path: '/fiscal/login',
-      name: 'fiscal-login',
-      component: () => import('@/views/fiscal/FiscalLogin.vue')
-    },
-    {
-      path: '/fiscal/dashboard',
-      name: 'fiscal-dashboard',
-      component: () => import('@/views/fiscal/FiscalDashboard.vue'),
-      meta: { requiresAuth: true, perfil: 'fiscal' }
-    },
-    {
-      path: '/fiscal/vaga/:id',
-      name: 'fiscal-vaga',
-      component: () => import('@/views/fiscal/FiscalDetalheVaga.vue'),
-      meta: { requiresAuth: true, perfil: 'fiscal' }
-    },
-    {
-      path: '/fiscal/infracao/nova',
-      name: 'fiscal-infracao-nova',
-      component: () => import('@/views/fiscal/FiscalNovaInfracao.vue'),
-      meta: { requiresAuth: true, perfil: 'fiscal' }
-    },
-    {
-      path: '/fiscal/infracoes',
-      name: 'fiscal-infracoes',
-      component: () => import('@/views/fiscal/FiscalListaInfracoes.vue'),
-      meta: { requiresAuth: true, perfil: 'fiscal' }
-    },
-    {
-      path: '/fiscal/relatorios',
-      name: 'fiscal-relatorios',
-      component: () => import('@/views/fiscal/FiscalRelatorios.vue'),
-      meta: { requiresAuth: true, perfil: 'fiscal' }
-    },
     // Rotas da Empresa/Autônomo
     {
       path: '/empresa/login',
@@ -90,6 +54,12 @@ const router = createRouter({
       path: '/empresa/dashboard',
       name: 'empresa-dashboard',
       component: () => import('@/views/empresa/EmpresaDashboard.vue'),
+      meta: { requiresAuth: true, perfil: 'empresa' }
+    },
+    {
+      path: '/empresa/historico',
+      name: 'empresa-historico',
+      component: () => import('@/views/empresa/EmpresaHistorico.vue'),
       meta: { requiresAuth: true, perfil: 'empresa' }
     },
     // Rotas da Prefeitura

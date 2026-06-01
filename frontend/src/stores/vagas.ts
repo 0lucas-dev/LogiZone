@@ -26,7 +26,7 @@ export const useVagasStore = defineStore('vagas', () => {
     try {
       const response = await axios.post('/api/sessoes/checkin', { vagaId, veiculoId, pagadorTipo, pagadorId, motoristaId });
       if (response.data.sucesso) {
-        sessaoAtiva.value = response.data.dados;
+        await buscarSessaoAtiva(response.data.dados.id);
         await buscarVagas();
         return { sucesso: true };
       }

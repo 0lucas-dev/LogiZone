@@ -1,23 +1,21 @@
 <template>
   <div class="login-container container">
     <div class="card login-card">
-      <h2 class="text-center mb-4">Acesso Prefeitura</h2>
-      <p class="text-center text-muted mb-4">Faça login para gerenciar as vagas da cidade.</p>
+      <h2 class="text-center mb-6 text-2xl font-bold text-navy">Gestão Municipal</h2>
       
       <form @submit.prevent="fazerLogin">
         <div class="form-group">
-          <label for="usuario">Usuário Gestor</label>
-          <input id="usuario" v-model="form.usuario" type="text" class="form-control" required placeholder="admin" />
+          <label>Usuário Administrativo</label>
+          <input v-model="usuario" type="text" class="form-control" placeholder="admin" required />
         </div>
-        
-        <div class="form-group mt-3">
-          <label for="senha">Senha</label>
-          <input id="senha" v-model="form.senha" type="password" class="form-control" required placeholder="admin" />
+        <div class="form-group mb-6">
+          <label>Senha</label>
+          <input v-model="senha" type="password" class="form-control" required />
         </div>
-
-        <button type="submit" class="btn btn-secondary mt-4 w-full" style="background-color:#059669;color:white">
-          Acessar Painel
-        </button>
+        <button type="submit" class="btn btn-primary w-full">Acessar Painel</button>
+        <div class="text-center mt-6">
+          <RouterLink to="/" class="text-sm text-muted">← Voltar ao Início</RouterLink>
+        </div>
       </form>
     </div>
   </div>
@@ -31,14 +29,11 @@ import { useUsuarioStore } from '@/stores/usuario';
 const router = useRouter();
 const usuarioStore = useUsuarioStore();
 
-const form = ref({
-  usuario: '',
-  senha: ''
-});
+const usuario = ref('');
+const senha = ref('');
 
 function fazerLogin() {
-  // Simulação de login da prefeitura
-  if (form.value.usuario && form.value.senha) {
+  if (usuario.value && senha.value) {
     usuarioStore.loginPrefeitura({ id: 1, nome: 'Gestor Municipal' });
     router.push('/prefeitura/dashboard');
   }
@@ -51,9 +46,16 @@ function fazerLogin() {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+
 }
 .login-card {
   width: 100%;
   max-width: 400px;
+
+
+
+}
+.text-navy {
+  color: var(--primary);
 }
 </style>

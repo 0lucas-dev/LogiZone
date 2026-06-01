@@ -1,20 +1,27 @@
 <template>
   <div class="mapa-vagas">
     <div class="filtros mb-4">
-      <input 
-        type="text" 
-        v-model="busca" 
-        placeholder="Buscar por bairro, rua ou código..." 
-        class="form-control"
-      />
+      <div class="search-box">
+        <span class="search-icon">🔎</span>
+        <input 
+          type="text" 
+          v-model="busca" 
+          placeholder="Buscar por bairro, rua ou código..." 
+          class="form-control"
+          id="busca-vagas"
+        />
+      </div>
+      <div class="resultados-info" v-if="busca">
+        {{ vagasFiltradas.length }} resultado(s) encontrado(s)
+      </div>
     </div>
 
-    <div v-if="carregando" class="text-center mt-4">
-      Carregando vagas...
+    <div v-if="carregando" class="text-center mt-4 loading-retro">
+      <span class="retro-blink">▶</span> Carregando vagas...
     </div>
 
     <div v-else-if="vagasFiltradas.length === 0" class="text-center mt-4">
-      Nenhuma vaga encontrada.
+      ✕ Nenhuma vaga encontrada.
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3">
@@ -61,3 +68,24 @@ const vagasFiltradas = computed(() => {
   );
 });
 </script>
+
+<style scoped>
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-icon {
+  font-size: 18px;
+}
+.resultados-info {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.loading-retro {
+  font-size: 20px;
+  padding: 32px;
+}
+</style>

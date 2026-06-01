@@ -1,35 +1,50 @@
 <template>
-  <div class="seletor-container container">
-    <div class="header text-center mt-4 mb-4">
-      <h1>Estacionamento Logístico</h1>
-      <p>Gerenciador Inteligente de Vagas de Carga e Descarga</p>
-    </div>
-
-    <div class="perfis-grid grid md:grid-cols-2 lg:grid-cols-4">
-      <div class="card text-center perfil-card" @click="irParaMotorista">
-        <h2>Motorista</h2>
-        <p>Encontre vagas, faça check-in e acompanhe seu tempo.</p>
-        <button class="btn btn-primary mt-4 w-full">Entrar</button>
+  <div class="seletor-container">
+    <main class="container py-6 flex-1">
+      <div class="text-center mb-6 mt-6">
+        <h1 class="brand-title">LogiZone</h1>
+        <p class="text-muted max-w-2xl mx-auto">
+          Sistema de Gestão de Vagas Rotativas e Logística
+        </p>
       </div>
 
-      <div class="card text-center perfil-card" @click="irParaEmpresa">
-        <h2>Empresa/Autônomo</h2>
-        <p>Gerencie frotas, motoristas e adicione créditos.</p>
-        <button class="btn btn-secondary mt-4 w-full" style="background-color:#4f46e5;color:white">Acessar</button>
-      </div>
+      <div class="grid md:grid-cols-3 max-w-5xl mx-auto gap-4 mt-6">
+        
+        <!-- Motorista -->
+        <div class="card perfil-card" @click="irParaMotorista">
+          <h3 class="perfil-title">Motorista</h3>
+          <p class="perfil-desc">
+            Encontre vagas, faça check-in pelo app e acompanhe seu histórico.
+          </p>
+          <button class="btn btn-outline w-full mt-4">Acessar</button>
+        </div>
 
-      <div class="card text-center perfil-card" @click="irParaPrefeitura">
-        <h2>Prefeitura</h2>
-        <p>Administre vagas, defina valores e monitore tudo.</p>
-        <button class="btn btn-secondary mt-4 w-full" style="background-color:#059669;color:white">Acessar</button>
-      </div>
+        <!-- Empresa -->
+        <div class="card perfil-card" @click="irParaEmpresa">
+          <h3 class="perfil-title">Empresa</h3>
+          <p class="perfil-desc">
+            Gestão de frotas, motoristas e créditos corporativos centralizada.
+          </p>
+          <button class="btn btn-outline w-full mt-4">Acessar</button>
+        </div>
 
-      <!-- <div class="card text-center perfil-card" @click="irParaFiscal">
-        <h2>👮 Fiscal</h2>
-        <p>Monitore vagas, registre infrações e acesse relatórios.</p>
-        <button class="btn btn-outline mt-4 w-full">Entrar</button>
-      </div> -->
-    </div>
+        <!-- Prefeitura -->
+        <div class="card perfil-card" @click="irParaPrefeitura">
+          <h3 class="perfil-title">Prefeitura</h3>
+          <p class="perfil-desc">
+            Monitoramento de ocupação e estatísticas de uso do município.
+          </p>
+          <button class="btn btn-outline w-full mt-4">Acessar</button>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container text-center">
+        <p class="text-xs text-muted">LogiZone &copy; {{ new Date().getFullYear() }} — Minimalist UI</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -45,10 +60,7 @@ function irParaEmpresa() {
   router.push('/empresa/login');
 }
 function irParaPrefeitura() {
-  router.push('/prefeitura/dashboard');
-}
-function irParaFiscal() {
-  router.push('/fiscal/login');
+  router.push('/prefeitura/login');
 }
 </script>
 
@@ -56,32 +68,43 @@ function irParaFiscal() {
 .seletor-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-height: 100vh;
+
 }
-.header h1 {
+
+.brand-title {
   font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
   color: var(--primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
-.header p {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-}
-.perfis-grid {
-  margin-top: 2rem;
-}
+
+/* Cards */
 .perfil-card {
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  padding: 3rem 2rem;
+  transition: border-color 0.2s, background-color 0.2s;
+  height: 100%;
 }
 .perfil-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
   border-color: var(--primary);
+  background-color: var(--surface-hover);
 }
-.perfil-card h2 {
-  margin-bottom: 1rem;
+
+.perfil-title {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+.perfil-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  flex-grow: 1;
+}
+
+.footer {
+  padding: 24px 0;
+  border-top: 1px solid var(--border-color);
 }
 </style>
