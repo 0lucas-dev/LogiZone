@@ -6,7 +6,7 @@
       <form @submit.prevent="cadastrar" class="p-2">
         <div class="form-group">
           <label for="cpf">CPF:</label>
-          <input id="cpf" v-model="form.cpf" type="text" class="form-control" required placeholder="000.000.000-00" />
+          <input id="cpf" v-model="form.cpf" type="text" class="form-control" required/>
         </div>
         
         <div class="form-group mt-3">
@@ -26,8 +26,12 @@
         </button>
       </form>
 
-      <div class="text-center mt-6">
-        <p>Já tem cadastro? <RouterLink to="/motorista/login">→ Faça Login</RouterLink></p>
+      <div class="mt-4 pt-6 border-t text-center text-sm">
+        <span class="text-muted">Já tem cadastro?</span>
+        <RouterLink to="/motorista/login">→ Faça Login</RouterLink>
+      </div>
+      <div class="text-center mt-4">
+        <RouterLink to="/" class="text-sm text-muted">← Voltar ao Início</RouterLink>
       </div>
     </div>
   </div>

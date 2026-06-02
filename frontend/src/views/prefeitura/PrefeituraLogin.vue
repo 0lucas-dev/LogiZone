@@ -6,7 +6,7 @@
       <form @submit.prevent="fazerLogin">
         <div class="form-group">
           <label>Usuário Administrativo</label>
-          <input v-model="usuario" type="text" class="form-control" placeholder="admin" required />
+          <input v-model="usuario" type="text" class="form-control" required />
         </div>
         <div class="form-group mb-6">
           <label>Senha</label>
@@ -16,6 +16,7 @@
         <div class="text-center mt-6">
           <RouterLink to="/" class="text-sm text-muted">← Voltar ao Início</RouterLink>
         </div>
+        
       </form>
     </div>
   </div>
@@ -51,9 +52,6 @@ function fazerLogin() {
 .login-card {
   width: 100%;
   max-width: 400px;
-
-
-
 }
 .text-navy {
   color: var(--primary);

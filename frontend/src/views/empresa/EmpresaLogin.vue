@@ -4,10 +4,10 @@
       <h2 class="text-center mb-6 text-2xl font-bold text-navy">Acesso Empresa</h2>
       
       <div class="flex border-b mb-6">
-        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors border-primary" 
+        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors" 
                 :class="aba === 'login' ? 'border-primary text-primary' : 'border-transparent text-muted'" 
                 @click="aba = 'login'">Login</button>
-        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors border-primary" 
+        <button class="flex-1 py-2 text-center text-sm font-medium transition-colors" 
                 :class="aba === 'registro' ? 'border-primary text-primary' : 'border-transparent text-muted'" 
                 @click="aba = 'registro'">Cadastrar</button>
       </div>
@@ -15,7 +15,7 @@
       <form v-if="aba === 'login'" @submit.prevent="fazerLogin">
         <div class="form-group">
           <label>CNPJ</label>
-          <input v-model="formLogin.cnpj" type="text" class="form-control" required placeholder="00.000.000/0001-00" />
+          <input v-model="formLogin.cnpj" type="text" class="form-control" required />
         </div>
         <div class="form-group mb-6">
           <label>Senha</label>
@@ -30,7 +30,7 @@
       <form v-else @submit.prevent="fazerRegistro">
         <div class="form-group">
           <label>CNPJ</label>
-          <input v-model="formRegistro.cnpj" type="text" class="form-control" required placeholder="00.000.000/0001-00" />
+          <input v-model="formRegistro.cnpj" type="text" class="form-control" required />
         </div>
         <div class="form-group">
           <label>Nome da Empresa</label>

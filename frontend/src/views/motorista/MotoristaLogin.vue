@@ -6,7 +6,7 @@
       <form @submit.prevent="fazerLogin">
         <div class="form-group">
           <label for="cpf">CPF</label>
-          <input id="cpf" v-model="form.cpf" type="text" class="form-control" required placeholder="000.000.000-00" />
+          <input id="cpf" v-model="form.cpf" type="text" class="form-control" required />
         </div>
         
         <div class="form-group mb-6">
