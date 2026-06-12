@@ -22,7 +22,7 @@
         <div v-if="erro" class="erro-msg mt-4">⚠ {{ erro }}</div>
 
         <button type="submit" class="btn btn-primary mt-4 w-full" :disabled="carregando">
-          {{ carregando ? '▶ Cadastrando...' : ' CADASTRAR ' }}
+          {{ carregando ? 'Cadastrando...' : ' CADASTRAR ' }}
         </button>
       </form>
 

@@ -10,7 +10,8 @@ router.get("/resumo", async (req: Request, res: Response) => {
     const totalVagas = await prisma.vaga.count({ where: { ativa: true } });
     
     const sessoesAtivas = await prisma.sessao.findMany({
-      where: { status: { in: ["ATIVA", "EXPIRADA"] } }
+      where: { status: { in: ["ATIVA", "EXPIRADA"] } },
+      include: { veiculo: true }
     });
 
     const ocupadas = sessoesAtivas.filter(s => s.status === "ATIVA").length;
@@ -43,6 +44,12 @@ router.get("/resumo", async (req: Request, res: Response) => {
       if (vaga) vagaMaisUsadaNome = vaga.codigo;
     }
 
+    const veiculosOcupando = sessoesAtivas.reduce((acc: Record<string, number>, s) => {
+      const tipo = s.veiculo?.tipo || 'OUTROS';
+      acc[tipo] = (acc[tipo] || 0) + 1;
+      return acc;
+    }, {});
+
     res.json({
       sucesso: true,
       dados: {
@@ -52,7 +59,8 @@ router.get("/resumo", async (req: Request, res: Response) => {
         vagasIrregulares: irregulares,
         totalSessoesHoje,
         totalInfracoesHoje,
-        vagaMaisUsada: vagaMaisUsadaNome
+        vagaMaisUsada: vagaMaisUsadaNome,
+        veiculosOcupando
       }
     });
   } catch (error) {

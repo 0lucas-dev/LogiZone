@@ -8,6 +8,8 @@ export interface Vaga {
   latitude: number;
   longitude: number;
   tamanho?: string;
+  horariosDisponiveis?: string;
+  tiposVeiculos?: string;
   valorMinuto?: number;
   limiteTempo: number;
   ativa: boolean;

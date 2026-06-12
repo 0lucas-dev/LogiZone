@@ -9,6 +9,8 @@ export const createVagaSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   tamanho: z.string().optional(),
+  horariosDisponiveis: z.string().optional(),
+  tiposVeiculos: z.string().optional(),
   valorMinuto: z.number().positive().optional(),
   limiteTempo: z.number().int().positive().optional()
 });

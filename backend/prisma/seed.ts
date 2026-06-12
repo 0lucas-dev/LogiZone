@@ -64,14 +64,14 @@ async function main() {
 
   // Vagas
   const vagasData = [
-    { codigo: "VAGA-001", logradouro: "Av. Paulista", numero: "1000", bairro: "Bela Vista", cidade: "São Paulo", latitude: -23.565, longitude: -46.652, tamanho: "CAMINHAO", valorMinuto: 1.50, limiteTempo: 45 },
-    { codigo: "VAGA-002", logradouro: "Av. Paulista", numero: "2000", bairro: "Consolação", cidade: "São Paulo", latitude: -23.559, longitude: -46.659, tamanho: "VAN", valorMinuto: 1.00, limiteTempo: 45 },
-    { codigo: "VAGA-003", logradouro: "Rua Augusta", numero: "1500", bairro: "Consolação", cidade: "São Paulo", latitude: -23.556, longitude: -46.657, tamanho: "UTILITARIO", valorMinuto: 0.75, limiteTempo: 30 },
-    { codigo: "VAGA-004", logradouro: "Rua Oscar Freire", numero: "800", bairro: "Jardim Paulista", cidade: "São Paulo", latitude: -23.564, longitude: -46.666, tamanho: "CAMINHAO", valorMinuto: 2.00, limiteTempo: 60 },
-    { codigo: "VAGA-005", logradouro: "Av. Brigadeiro Faria Lima", numero: "3000", bairro: "Itaim Bibi", cidade: "São Paulo", latitude: -23.582, longitude: -46.680, tamanho: "VAN", valorMinuto: 1.25, limiteTempo: 45 },
-    { codigo: "VAGA-006", logradouro: "Rua Amauri", numero: "200", bairro: "Itaim Bibi", cidade: "São Paulo", latitude: -23.581, longitude: -46.682, tamanho: "UTILITARIO", valorMinuto: 0.50, limiteTempo: 30 },
-    { codigo: "VAGA-007", logradouro: "Av. Eng. Luís Carlos Berrini", numero: "1500", bairro: "Cidade Monções", cidade: "São Paulo", latitude: -23.606, longitude: -46.694, tamanho: "CAMINHAO", valorMinuto: 1.75, limiteTempo: 45 },
-    { codigo: "VAGA-008", logradouro: "Av. das Nações Unidas", numero: "12901", bairro: "Brooklin Paulista", cidade: "São Paulo", latitude: -23.608, longitude: -46.697, tamanho: "VAN", valorMinuto: 1.00, limiteTempo: 45 },
+    { codigo: "VAGA-001", logradouro: "Av. Sampaio Vidal", numero: "100", bairro: "Centro", cidade: "Marília", latitude: -22.2139, longitude: -49.9458, tamanho: "CAMINHAO", valorMinuto: 1.50, limiteTempo: 45, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "CAMINHAO" },
+    { codigo: "VAGA-002", logradouro: "Rua São Luiz", numero: "200", bairro: "Centro", cidade: "Marília", latitude: -22.2150, longitude: -49.9470, tamanho: "VAN", valorMinuto: 1.00, limiteTempo: 45, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "VAN, UTILITARIO" },
+    { codigo: "VAGA-003", logradouro: "Rua Nove de Julho", numero: "300", bairro: "Centro", cidade: "Marília", latitude: -22.2145, longitude: -49.9460, tamanho: "UTILITARIO", valorMinuto: 0.75, limiteTempo: 30, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "UTILITARIO" },
+    { codigo: "VAGA-004", logradouro: "Av. Tiradentes", numero: "400", bairro: "Fragata", cidade: "Marília", latitude: -22.2180, longitude: -49.9480, tamanho: "CAMINHAO", valorMinuto: 2.00, limiteTempo: 60, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "TODOS" },
+    { codigo: "VAGA-005", logradouro: "Av. Rio Branco", numero: "500", bairro: "Alto Cafezal", cidade: "Marília", latitude: -22.2120, longitude: -49.9500, tamanho: "VAN", valorMinuto: 1.25, limiteTempo: 45, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "VAN" },
+    { codigo: "VAGA-006", logradouro: "Rua Bahia", numero: "600", bairro: "Cascata", cidade: "Marília", latitude: -22.2110, longitude: -49.9490, tamanho: "UTILITARIO", valorMinuto: 0.50, limiteTempo: 30, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "UTILITARIO" },
+    { codigo: "VAGA-007", logradouro: "Rua Paraná", numero: "700", bairro: "Centro", cidade: "Marília", latitude: -22.2160, longitude: -49.9450, tamanho: "CAMINHAO", valorMinuto: 1.75, limiteTempo: 45, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "CAMINHAO" },
+    { codigo: "VAGA-008", logradouro: "Av. Santo Antônio", numero: "800", bairro: "Polonês", cidade: "Marília", latitude: -22.2200, longitude: -49.9550, tamanho: "VAN", valorMinuto: 1.00, limiteTempo: 45, horariosDisponiveis: "08:00 - 18:00", tiposVeiculos: "VAN, UTILITARIO" },
   ];
 
   const vagas = [];
